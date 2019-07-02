@@ -21,6 +21,7 @@ Expected result
 * Every pull request should have label of type issue. Example: `bug`, `tests`, `vk_api`, `visualizator` and so on
 * Pull request shouldn't be very big!
 * Everynissue should have some comment
+* One pull request only **one** issue
 ### Tests
 * There must be individual branch for tests. This branch wont be merged in master ever!
 ## Contributors
