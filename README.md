@@ -16,7 +16,7 @@
 Short test case
 Expected result
 ```
-* Any variables should be pascal case. Example: `camelCase`
+* Any variables should be camel case. Example: `camelCase`
 * **Don't** merge pull request before any checks
 * Every pull request should have label of type issue. Example: `bug`, `tests`, `vk_api`, `visualizator` and so on
 * Pull request shouldn't be very big!
