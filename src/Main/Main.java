@@ -13,7 +13,7 @@ public class Main {
 
         VkAPI vk = new VkAPI();
         // id of user
-        int userID = 141845542;
+        int userID = 1411555542;
         // get json
         String response = vk.getUserFriends(userID, requestArgs);
         ArrayList<VKUser> list;
@@ -23,8 +23,5 @@ public class Main {
         if (list != null)
             for (VKUser el : list)
                 System.out.println(el.toString());
-        else
-            System.out.println("This account is private");
-
     }
 }

@@ -21,7 +21,14 @@ public class VkAPI {
             JsonParser jsonParser = new JsonParser();
             JsonObject jo = (JsonObject)jsonParser.parse(str);
             if (jo.get("error") != null)
+            {
+                System.out.println("Error code: " + jo.get("error").getAsJsonObject().get("error_code").getAsInt()
+                                   + "\ndescription: " +
+                                   jo.get("error").getAsJsonObject().get("error_msg").getAsString());
                 return null;
+            }
+
+
             JsonArray jsonArr = jo.get("response").getAsJsonObject().getAsJsonArray("items");
             ArrayList<VKUser> list = new ArrayList<>();
 
