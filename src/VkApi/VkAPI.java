@@ -52,20 +52,7 @@ public class VkAPI {
 
     public String getUserFriends(int userId, String[] args)
     {
-        /*
-        StringBuilder sb = new StringBuilder();
-        sb.append(beginVkApi + "friends.get?user_id=" + userId);
-        if(args != null) {
-            sb.append("&fields=");
-            for (String field : args)
-                sb.append(field + ",");
-            sb.deleteCharAt(sb.length()-1);
-        }
-        sb.append(endVkApi);
-        */
-        String sb = createGetRequest("friends.get?user_id=", userId, args);
-
-        return getRequest(sb.toString());
+        return getRequest(createGetRequest("friends.get?user_id=", userId, args));
     }
 
     public VKUser getUser(int userId, String[] args)
@@ -76,12 +63,11 @@ public class VkAPI {
         JsonParser jsonParser = new JsonParser();
         JsonObject jo = (JsonObject)jsonParser.parse(request);
 
-        JsonElement response = jo.get("response").getAsJsonArray().get(0).getAsJsonObject().get("id");
-        System.out.println(response.toString());
+        JsonObject response = jo.get("response").getAsJsonArray().get(0).getAsJsonObject();
 
-
-        return new VKUser(1, "aa", "bb");
-        //return getRequest(sb.toString());
+        return new VKUser(response.get("id").getAsInt(),
+                          response.get("first_name").getAsString(),
+                          response.get("last_name").getAsString());
     }
 
     private String createGetRequest(String method, int id, String[] args)
@@ -97,6 +83,7 @@ public class VkAPI {
         sb.append(endVkApi);
         return sb.toString();
     }
+
     private String getRequest(String url)
     {
         StringBuilder sb = new StringBuilder();
