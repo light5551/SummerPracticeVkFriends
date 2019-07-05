@@ -13,7 +13,9 @@ public class Main {
 
         VkAPI vk = new VkAPI();
         // id of user
+
         int userID = 179878269;
+
         // get json
 
         String response = vk.getUserFriends(userID, orderFriends, requestArgs);
@@ -25,7 +27,10 @@ public class Main {
         list = vk.parseFriendsJson(response);// json -> ArrayList
         // this only for result
         if (list != null)
+            if(!list.isEmpty())
             for (VKUser el : list)
                 System.out.println(el.toString());
+            else
+                System.out.println("Empty list");
     }
 }
