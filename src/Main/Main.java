@@ -13,12 +13,14 @@ public class Main {
 
         VkAPI vk = new VkAPI();
         // id of user
-        int userID = 1411555542;
+        //int userID = 141845542;
+        int userID = 1;
         // get json
         String response = vk.getUserFriends(userID, requestArgs);
         ArrayList<VKUser> list;
-        list = vk.parseFriendsJson(response);// json -> ArrayList
 
+        list = vk.parseFriendsJson(response);// json -> ArrayList
+        vk.getUser(1, new String[]{"da", "dasd"});
         // this only for result
         if (list != null)
             for (VKUser el : list)
