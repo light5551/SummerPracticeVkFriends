@@ -50,10 +50,40 @@ public class VkAPI {
         return null;
     }
 
-    public String getUserFriends(int userId, String[] args)
+    public String getUserFriends(int userId,  String order, String[] args)
+    {
+        return getRequest(createGetRequest("friends.get?user_id=", userId, order, args));
+    }
+
+    public VKUser getUser(int userId, String[] args)
+    {
+        String sb = createGetRequest("users.get?user_ids=", userId,null, args);
+        String request = getRequest(sb);
+
+        JsonParser jsonParser = new JsonParser();
+        JsonObject jo = (JsonObject)jsonParser.parse(request);
+
+        if (jo.get("error") != null)
+        {
+            System.out.println("Error code: " + jo.get("error").getAsJsonObject().get("error_code").getAsInt()
+                    + "\ndescription: " +
+                    jo.get("error").getAsJsonObject().get("error_msg").getAsString());
+            return null;
+        }
+
+        JsonObject response = jo.get("response").getAsJsonArray().get(0).getAsJsonObject();
+
+        return new VKUser(response.get("id").getAsInt(),
+                          response.get("first_name").getAsString(),
+                          response.get("last_name").getAsString());
+    }
+
+    private String createGetRequest(String method, int id, String order, String[] args)
     {
         StringBuilder sb = new StringBuilder();
-        sb.append(beginVkApi + "friends.get?user_id=" + userId);
+        sb.append(beginVkApi + method + id);
+        if (order != null)
+            sb.append("&order=" + order);
         if(args != null) {
             sb.append("&fields=");
             for (String field : args)
@@ -61,9 +91,7 @@ public class VkAPI {
             sb.deleteCharAt(sb.length()-1);
         }
         sb.append(endVkApi);
-
-
-        return getRequest(sb.toString());
+        return sb.toString();
     }
 
     private String getRequest(String url)
