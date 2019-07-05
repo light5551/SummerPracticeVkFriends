@@ -8,15 +8,15 @@ import java.util.ArrayList;
 public class Main {
 
     private static final String[]  requestArgs = {"photo50", "education"};
-
+    private static final String orderFriends = "name";
     public static void main(String[] args) {
 
         VkAPI vk = new VkAPI();
         // id of user
-        int userID = 141845542;
-        //int userID = 1;
+        int userID = 179878269;
         // get json
-        String response = vk.getUserFriends(userID, requestArgs);
+
+        String response = vk.getUserFriends(userID, orderFriends, requestArgs);
         ArrayList<VKUser> list;
 
         //информация о человеке

@@ -10,7 +10,7 @@ import com.google.gson.*;
 
 public class VkAPI {
 
-    private final String accessVkApiToken = "0c91fdfc0c91fdfc0c91fdfc3e0cfa8e5100c910c91fdfc518a61b257703bf5b0589264";
+    private final String accessVkApiToken = "<key of app>";
     private final String versionVkApi = "5.101";
     private final String beginVkApi = "https://api.vk.com/method/";
     private final String endVkApi = "&access_token=" + accessVkApiToken + "&v=" + versionVkApi;
@@ -50,18 +50,26 @@ public class VkAPI {
         return null;
     }
 
-    public String getUserFriends(int userId, String[] args)
+    public String getUserFriends(int userId,  String order, String[] args)
     {
-        return getRequest(createGetRequest("friends.get?user_id=", userId, args));
+        return getRequest(createGetRequest("friends.get?user_id=", userId, order, args));
     }
 
     public VKUser getUser(int userId, String[] args)
     {
-        String sb = createGetRequest("users.get?user_ids=", userId, args);
+        String sb = createGetRequest("users.get?user_ids=", userId,null, args);
         String request = getRequest(sb);
 
         JsonParser jsonParser = new JsonParser();
         JsonObject jo = (JsonObject)jsonParser.parse(request);
+
+        if (jo.get("error") != null)
+        {
+            System.out.println("Error code: " + jo.get("error").getAsJsonObject().get("error_code").getAsInt()
+                    + "\ndescription: " +
+                    jo.get("error").getAsJsonObject().get("error_msg").getAsString());
+            return null;
+        }
 
         JsonObject response = jo.get("response").getAsJsonArray().get(0).getAsJsonObject();
 
@@ -70,10 +78,12 @@ public class VkAPI {
                           response.get("last_name").getAsString());
     }
 
-    private String createGetRequest(String method, int id, String[] args)
+    private String createGetRequest(String method, int id, String order, String[] args)
     {
         StringBuilder sb = new StringBuilder();
         sb.append(beginVkApi + method + id);
+        if (order != null)
+            sb.append("&order=" + order);
         if(args != null) {
             sb.append("&fields=");
             for (String field : args)
