@@ -31,6 +31,8 @@ public class VKUser {
     @Override
     public boolean equals(Object obj) {
         VKUser tmp = (VKUser)obj;
-        return this.firstName.equals(tmp.firstName);
+        if (tmp.userId == this.userId)
+            return true;
+        return false;
     }
 }
