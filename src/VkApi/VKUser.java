@@ -27,4 +27,10 @@ public class VKUser {
     public String toString() {
         return userId + " " + firstName + " " + lastName;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        VKUser tmp = (VKUser)obj;
+        return this.firstName.equals(tmp.firstName);
+    }
 }
