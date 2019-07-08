@@ -29,11 +29,12 @@ public class Visualizator extends JFrame {
                     String in =  currentUser.firstName + " " + currentUser.lastName;
                     ArrayList vertexes = new ArrayList();
                     vertexes.add(friendsGraph.insertVertex(parent, null, in, xRoot, yRoot, 80, 30));
-                    int y = 0, x = -1;
+                    int y = -1, x = -1;
                     for (int i = 0; i<friendList.size(); ){
                         mxCell c = (mxCell)vertexes.get(i);
                         in = friendList.get(i).firstName + " " + friendList.get(i).lastName;
                         if(c.getValue().toString().charAt(0) == in.charAt(0)) {
+                            if(i==0) x++;
                             vertexes.add(friendsGraph.insertVertex(parent, null, in, xBorder + x * 130,  yRoot + 80 + (y + 1)* 50, 80, 30));
                             i++;
                             y++;
