@@ -34,6 +34,8 @@ public class VKUser {
         if (this.firstName.equals(tmp.firstName))
             if (this.lastName.equals(tmp.lastName))
                 return tmp.userId == this.userId;
+        if (tmp.userId == this.userId)
+            return true;
         return false;
     }
 }
