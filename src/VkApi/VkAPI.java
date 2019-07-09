@@ -8,6 +8,7 @@ import java.net.URLConnection;
 
 import com.google.gson.*;
 
+
 public class VkAPI {
 
     private final String accessVkApiToken = "<key of app>";
@@ -37,7 +38,8 @@ public class VkAPI {
                 JsonObject tmp = obj.getAsJsonObject();
                 list.add( new VKUser( tmp.get("id").getAsInt(),
                         tmp.get("first_name").getAsString(),
-                        tmp.get("last_name").getAsString()));
+                        tmp.get("last_name").getAsString(),
+                        tmp.get("photo_50").getAsString()));
             }
 
             return list;
@@ -75,7 +77,8 @@ public class VkAPI {
 
         return new VKUser(response.get("id").getAsInt(),
                           response.get("first_name").getAsString(),
-                          response.get("last_name").getAsString());
+                          response.get("last_name").getAsString(),
+                          response.get("photo_50").getAsString());
     }
 
     private String createGetRequest(String method, int id, String order, String[] args)
