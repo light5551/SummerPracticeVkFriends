@@ -10,10 +10,26 @@ import com.google.gson.*;
 
 public class VkAPI {
 
+    static int currentUserId;
+
     private final String accessVkApiToken = "<key of app>";
     private final String versionVkApi = "5.101";
     private final String beginVkApi = "https://api.vk.com/method/";
     private final String endVkApi = "&access_token=" + accessVkApiToken + "&v=" + versionVkApi;
+
+    public VkAPI(){
+        currentUserId = 1;
+    }
+
+    public void updateCurrentUser(int id)
+    {
+        currentUserId = id;
+    }
+
+    public VKUser getCurrentUser()
+    {
+        return getUser(currentUserId, null);
+    }
 
     public ArrayList<VKUser> parseFriendsJson(String str) {
         try
