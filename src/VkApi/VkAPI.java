@@ -22,9 +22,6 @@ public class VkAPI {
 
     public VkAPI(){
         conversationJson = new JsonConversation();
-    }
-
-    public VkAPI(){
         currentUserId = 1;
     }
 
@@ -79,6 +76,11 @@ public class VkAPI {
 
     public VKUser getUser(int userId, String[] args)
     {
+        if (args == null)
+        {
+            args = new String[]{"photo_50", "education"};
+        }
+
         String request = getRequest(createGetRequest("users.get?user_ids=", userId,null, args));
         JsonObject jo = conversationJson.parseJson(request);
 

@@ -22,7 +22,7 @@ public class Main {
         // id of user
 
         int userID = 179878269;
-        vk.updateCurrentUser(userID);
+        VkAPI.updateCurrentUser(userID);
 
         // get json
 
