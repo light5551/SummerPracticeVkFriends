@@ -22,6 +22,7 @@ public class Main {
         // id of user
 
         int userID = 179878269;
+        vk.updateCurrentUser(userID);
 
         // get json
 
@@ -30,6 +31,9 @@ public class Main {
 
         //информация о человеке
         System.out.println(vk.getUser(userID, null));
+
+        VKUser curUser = vk.getCurrentUser();
+        System.out.println(curUser.toString());
 
         list = vk.parseFriendsJson(response);// json -> ArrayList
 

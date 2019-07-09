@@ -10,6 +10,9 @@ import com.google.gson.*;
 
 public class VkAPI {
 
+    static int currentUserId;
+    static VKUser currentVkUser;
+
     private final String accessVkApiToken = "<key of app>";
     private final String versionVkApi = "5.101";
     private final String beginVkApi = "https://api.vk.com/method/";
@@ -18,6 +21,22 @@ public class VkAPI {
 
     public VkAPI(){
         conversationJson = new JsonConversation();
+    }
+
+    public VkAPI(){
+        currentUserId = 1;
+    }
+
+    public static void updateCurrentUser(int id)
+    {
+        currentUserId = id;
+        VkAPI vk = new VkAPI();
+        currentVkUser = vk.getUser(id, null);
+    }
+
+    public static VKUser getCurrentUser()
+    {
+        return currentVkUser;
     }
 
     public ArrayList<VKUser> parseFriendsJson(String str) {
