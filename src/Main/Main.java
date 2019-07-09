@@ -32,6 +32,11 @@ public class Main {
         System.out.println(vk.getUser(userID, null));
 
         list = vk.parseFriendsJson(response);// json -> ArrayList
+
+        // or you can do it in one click
+        // list = vk.getFriends(userID, orderFriends, requestArgs);
+
+
         // this only for result
         System.out.println(list.size());
         if (list != null)

@@ -108,4 +108,10 @@ public class VkAPI {
         return sb.toString();
     }
 
+    public ArrayList<VKUser> getFriends(int userId,  String order, String[] args)
+    {
+        String response = getUserFriends(userId, order, args);
+        return parseFriendsJson(response);
+    }
+
 }
