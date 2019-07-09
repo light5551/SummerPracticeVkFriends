@@ -14,22 +14,23 @@ public class VkAPI {
     private final String versionVkApi = "5.101";
     private final String beginVkApi = "https://api.vk.com/method/";
     private final String endVkApi = "&access_token=" + accessVkApiToken + "&v=" + versionVkApi;
+    private JsonConversation conversationJson;
+
+    public VkAPI(){
+        conversationJson = new JsonConversation();
+    }
 
     public ArrayList<VKUser> parseFriendsJson(String str) {
         try
         {
-            JsonParser jsonParser = new JsonParser();
-            JsonObject jo = (JsonObject)jsonParser.parse(str);
-            if (jo.get("error") != null)
+            JsonObject jo = conversationJson.parseJson(str);
+            if (conversationJson.isError(jo))
             {
-                System.out.println("Error code: " + jo.get("error").getAsJsonObject().get("error_code").getAsInt()
-                                   + "\ndescription: " +
-                                   jo.get("error").getAsJsonObject().get("error_msg").getAsString());
+                System.out.println(conversationJson.getErrorMessage());
                 return null;
             }
 
-
-            JsonArray jsonArr = jo.get("response").getAsJsonObject().getAsJsonArray("items");
+            JsonArray jsonArr = conversationJson.getItemsFromResponse(jo);
             ArrayList<VKUser> list = new ArrayList<>();
 
             for (JsonElement obj : jsonArr)
@@ -57,21 +58,16 @@ public class VkAPI {
 
     public VKUser getUser(int userId, String[] args)
     {
-        String sb = createGetRequest("users.get?user_ids=", userId,null, args);
-        String request = getRequest(sb);
+        String request = getRequest(createGetRequest("users.get?user_ids=", userId,null, args));
+        JsonObject jo = conversationJson.parseJson(request);
 
-        JsonParser jsonParser = new JsonParser();
-        JsonObject jo = (JsonObject)jsonParser.parse(request);
-
-        if (jo.get("error") != null)
+        if (conversationJson.isError(jo))
         {
-            System.out.println("Error code: " + jo.get("error").getAsJsonObject().get("error_code").getAsInt()
-                    + "\ndescription: " +
-                    jo.get("error").getAsJsonObject().get("error_msg").getAsString());
+            System.out.println(conversationJson.getErrorMessage());
             return null;
         }
 
-        JsonObject response = jo.get("response").getAsJsonArray().get(0).getAsJsonObject();
+        JsonObject response = conversationJson.getJsonObject(jo);
 
         return new VKUser(response.get("id").getAsInt(),
                           response.get("first_name").getAsString(),
