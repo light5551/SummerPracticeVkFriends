@@ -10,7 +10,7 @@ import com.google.gson.*;
 
 public class VkAPI {
 
-    private final String accessVkApiToken = "0c91fdfc0c91fdfc0c91fdfc3e0cfa8e5100c910c91fdfc518a61b257703bf5b0589264";
+    private final String accessVkApiToken = "<key of app>";
     private final String versionVkApi = "5.101";
     private final String beginVkApi = "https://api.vk.com/method/";
     private final String endVkApi = "&access_token=" + accessVkApiToken + "&v=" + versionVkApi;
