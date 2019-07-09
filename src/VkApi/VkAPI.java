@@ -8,6 +8,7 @@ import java.net.URLConnection;
 
 import com.google.gson.*;
 
+
 public class VkAPI {
 
     static int currentUserId;
@@ -21,9 +22,6 @@ public class VkAPI {
 
     public VkAPI(){
         conversationJson = new JsonConversation();
-    }
-
-    public VkAPI(){
         currentUserId = 1;
     }
 
@@ -57,7 +55,8 @@ public class VkAPI {
                 JsonObject tmp = obj.getAsJsonObject();
                 list.add( new VKUser( tmp.get("id").getAsInt(),
                         tmp.get("first_name").getAsString(),
-                        tmp.get("last_name").getAsString()));
+                        tmp.get("last_name").getAsString(),
+                        tmp.get("photo_50").getAsString()));
             }
 
             return list;
@@ -77,6 +76,11 @@ public class VkAPI {
 
     public VKUser getUser(int userId, String[] args)
     {
+        if (args == null)
+        {
+            args = new String[]{"photo_50", "education"};
+        }
+
         String request = getRequest(createGetRequest("users.get?user_ids=", userId,null, args));
         JsonObject jo = conversationJson.parseJson(request);
 
@@ -90,7 +94,8 @@ public class VkAPI {
 
         return new VKUser(response.get("id").getAsInt(),
                           response.get("first_name").getAsString(),
-                          response.get("last_name").getAsString());
+                          response.get("last_name").getAsString(),
+                          response.get("photo_50").getAsString());
     }
 
     private String createGetRequest(String method, int id, String order, String[] args)

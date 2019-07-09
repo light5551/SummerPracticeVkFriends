@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 public class Main {
 
-    private static final String[]  requestArgs = {"photo50", "education"};
+    private static final String[]  requestArgs = {"photo_50", "education"};
     private static final String orderFriends = "name";
     public static void main(String[] args) {
         JFrame.setDefaultLookAndFeelDecorated(true);
@@ -22,7 +22,7 @@ public class Main {
         // id of user
 
         int userID = 179878269;
-        vk.updateCurrentUser(userID);
+        VkAPI.updateCurrentUser(userID);
 
         // get json
 
@@ -42,7 +42,6 @@ public class Main {
 
 
         // this only for result
-        System.out.println(list.size());
         if (list != null)
             if (!list.isEmpty())
                 for (VKUser el : list)

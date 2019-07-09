@@ -4,6 +4,7 @@ public class VKUser {
     public int userId;
     public String firstName;
     public String lastName;
+    public String urlImage_50;
     /*public boolean is_closed;
     public boolean can_access_closed;
     public int sex;
@@ -16,11 +17,13 @@ public class VKUser {
     public VKUser(
             int userId,
             String firstName,
-            String lastName)
+            String lastName,
+            String urlImage_50)
     {
         this.userId = userId;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.urlImage_50 = urlImage_50;
     }
 
     @Override

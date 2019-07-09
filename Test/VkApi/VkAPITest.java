@@ -39,7 +39,7 @@ public class VkAPITest extends Assert{
 
     @Test
     public void getUser(){
-        VKUser user = new VKUser(179878269,"Sergey", "Glazunov");
+        VKUser user = new VKUser(179878269,"Sergey", "Glazunov", null);
         VKUser expectedUser =  test.getUser(userID, requestArgs);
         Assert.assertEquals(user, expectedUser);
         System.out.println("Valid");
