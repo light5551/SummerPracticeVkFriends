@@ -12,7 +12,6 @@ import VkApi.VKUser;
 
 public class Visualizator extends JFrame {
 
-    final int userID = 179878269;
     final int xRoot = 600, yRoot = 20, xBorder = 20;
 
     public Visualizator() {
@@ -25,7 +24,7 @@ public class Visualizator extends JFrame {
             try {
                     ArrayList<VKUser> friendList = Main.getList();
                     VkAPI currentApi = new VkAPI();
-                    VKUser currentUser = currentApi.getUser(userID, null);
+                    VKUser currentUser = currentApi.getUser(VkAPI.getCurrentUser().userId, null);
                     String in =  currentUser.firstName + " " + currentUser.lastName;
                     ArrayList vertexes = new ArrayList();
                     vertexes.add(friendsGraph.insertVertex(parent, null, in, xRoot, yRoot, 80, 30));
@@ -58,8 +57,8 @@ public class Visualizator extends JFrame {
     public static void initGUI(){
         Visualizator frame = new Visualizator();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setPreferredSize(new Dimension(200,200));
-        frame.setLocation(550, 200);
+        frame.setPreferredSize(new Dimension(1000,600));
+        frame.setLocation(200, 100);
         frame.pack();
         frame.setVisible(true);
     }
