@@ -13,11 +13,11 @@ public class VkAPI {
 
     static int currentUserId;
     static VKUser currentVkUser;
-
     private final String accessVkApiToken = "<key of app>";
     private final String versionVkApi = "5.101";
     private final String beginVkApi = "https://api.vk.com/method/";
     private final String endVkApi = "&access_token=" + accessVkApiToken + "&v=" + versionVkApi;
+    private final int lengthVkDomen = 15;
     private JsonConversation conversationJson;
 
     public VkAPI(){
@@ -138,6 +138,29 @@ public class VkAPI {
         return parseFriendsJson(response);
     }
 
+    public int getIdByUrl(String url)
+    {
+        String account = getAccountNameFromUrl(url);
+        if (account != null) {
+            var request = getRequest(convertVkUrlToVkApiUrl(account));
+            return conversationJson.getObjectId(conversationJson.parseJson(request));
+        }
+        return 0;
+    }
+
+    private String getAccountNameFromUrl(String url)
+    {
+        var newStr = url.substring(lengthVkDomen);
+        if (newStr.contains("/")||newStr.contains("?")||newStr.contains("&"))
+            return null;
+        return newStr;
+    }
+
+    private String convertVkUrlToVkApiUrl(String accountName)
+    {
+        return beginVkApi + "utils.resolveScreenName?screen_name=" + accountName + endVkApi;
+    }
+  
     public ArrayList<VKUser> getCommonFriends(int firstId, int secondId)
     {
         var first = getFriends(firstId, "name", new String[]{"photo_50"});
@@ -149,5 +172,6 @@ public class VkAPI {
             }
        }
        return commonFriends;
+
     }
 }
