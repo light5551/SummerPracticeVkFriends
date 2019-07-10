@@ -22,14 +22,15 @@ public class Main {
 
         int userID = 179878269;
         VkAPI.updateCurrentUser(userID);
-        var list = vk.getFriends(VkAPI.getCurrentUser().userId, orderFriends, requestArgs);   
+        ArrayList<VKUser> list = vk.getFriends(VkAPI.getCurrentUser().userId, orderFriends, requestArgs);
         
         int id = vk.getIdByUrl("https://vk.com/consolewritesj");
         System.out.println(id);
-      
+
         var friendsAnnaSergey = vk.getCommonFriends(VkAPI.getCurrentUser().userId, 141845542);
         for (var i : friendsAnnaSergey)
             System.out.println(i.toString());
+
         return list;
     }
 }

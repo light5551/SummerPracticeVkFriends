@@ -23,8 +23,7 @@ public class Visualizator extends JFrame {
             friendsGraph.getModel().beginUpdate();
             try {
                     ArrayList<VKUser> friendList = Main.getList();
-                    VkAPI currentApi = new VkAPI();
-                    VKUser currentUser = currentApi.getUser(VkAPI.getCurrentUser().userId, null);
+                    VKUser currentUser = VkAPI.getCurrentUser();
                     String in =  currentUser.firstName + " " + currentUser.lastName;
                     ArrayList vertexes = new ArrayList();
                     vertexes.add(friendsGraph.insertVertex(parent, null, in, xRoot, yRoot, 80, 30));
