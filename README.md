@@ -58,7 +58,7 @@
 3. [Токарев Андрей](https://github.com/yawningstudent) (7382) - разработка GUI, построение графа.
 # 
 **Первая итерация**
-```
+```markdown
 1. Получение списка ID друзей пользователя.
 2. Визуализация пробной версии графа друзей.
 3. Библиотека для написания юнит-тестов JUnit.
@@ -68,9 +68,9 @@
  краткая инструкция для запуска программы
 
 ## Main tasks
-- [ ]  Get list of friends of user  
-- [ ] Graph-visualizator
-- [ ] Tests
+ - [x]  Get list of friends of user  
+ - [ ] Graph-visualizator
+ - [x] Tests
 
 ## Rules for contributors
 * After any pull request need to change [quick start](https://github.com/light5551/SummerPracticeVkFriends/new/master?readme=1#quick-start)
