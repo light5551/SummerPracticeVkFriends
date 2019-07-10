@@ -27,6 +27,7 @@ public class Visualizator extends JFrame {
     JScrollPane scrollPane = new JScrollPane(graphComponent);
     JPanel checkPanel = new JPanel();
     JPanel exitPanel = new JPanel();
+    VkAPI vk = new VkAPI();
 
     public Visualizator() {
 
@@ -64,15 +65,18 @@ public class Visualizator extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    userID = Integer.parseInt(userField.getText());
+                    try {
+                        userID = Integer.parseInt(userField.getText());
+                    } catch (Exception ex) {
+                        userID = vk.getIdByUrl(userField.getText());
+                    }
                     clearPanel(scrollPane);
                     clearPanel(exitPanel);
                     clearPanel(checkPanel);
                     initGraphPanel();
                     mainPanel.updateUI();
                 } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(Visualizator.this,
-                            "Пожалуйста, введите корректный ID");
+                    JOptionPane.showMessageDialog(Visualizator.this,"Пожалуйста, введите корректный ID");
                 }
             }
         });
@@ -82,15 +86,18 @@ public class Visualizator extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    friendID = Integer.parseInt(friendField.getText());
+                    try {
+                        friendID = Integer.parseInt(friendField.getText());
+                    } catch (Exception ex) {
+                        friendID = vk.getIdByUrl(friendField.getText());
+                    }
                     clearPanel(scrollPane);
                     clearPanel(exitPanel);
                     clearPanel(checkPanel);
                     initCommonFriendsGraph();
                     mainPanel.updateUI();
                 } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(Visualizator.this,
-                            "Пожалуйста, введите корректный ID");
+                    JOptionPane.showMessageDialog(Visualizator.this,"Пожалуйста, введите корректный ID");
                 }
             }
         });
@@ -108,7 +115,6 @@ public class Visualizator extends JFrame {
         Object parent = friendsGraph.getDefaultParent();
         friendsGraph.getModel().beginUpdate();
         try {
-            VkAPI vk = new VkAPI();
             VkAPI.updateCurrentUser(userID);
             ArrayList<VKUser> friendList = vk.getFriends(VkAPI.getCurrentUser().userId, orderFriends, requestArgs);
             VKUser currentUser = VkAPI.getCurrentUser();
@@ -146,7 +152,10 @@ public class Visualizator extends JFrame {
         scrollPane = new JScrollPane(graphComponent);
         scrollPane.setWheelScrollingEnabled(true);
         checkPanel = new JPanel();
-        scrollPane.setPreferredSize(new Dimension(1290, 600));
+        Dimension sSize = Toolkit.getDefaultToolkit ().getScreenSize ();
+        sSize.width-=80;
+        sSize.height-=180;
+        scrollPane.setPreferredSize(sSize);
         exitPanel = new JPanel();
         JButton exitButton = new JButton("Назад");
         exitButton.addActionListener(new ActionListener() {
@@ -200,7 +209,6 @@ public class Visualizator extends JFrame {
         Object parent = CommonfriendsGraph.getDefaultParent();
         CommonfriendsGraph.getModel().beginUpdate();
         try {
-            VkAPI vk = new VkAPI();
             VKUser currentUser = VkAPI.getCurrentUser();
             String in = currentUser.firstName + " " + currentUser.lastName;
             ArrayList vertexes = new ArrayList();
@@ -242,7 +250,10 @@ public class Visualizator extends JFrame {
         graphComponent.getViewport().setBackground(newColor);
         final JScrollPane scrollPane = new JScrollPane(graphComponent);
         JPanel checkPanel = new JPanel();
-        //scrollPane.setMaximumSize(new Dimension(800, 500));
+        Dimension sSize = Toolkit.getDefaultToolkit ().getScreenSize ();
+        sSize.width-=80;
+        sSize.height-=180;
+        scrollPane.setPreferredSize(sSize);
         JPanel exitPanel = new JPanel();
         JButton exitButton = new JButton("Назад");
         exitButton.addActionListener(new ActionListener() {
@@ -274,11 +285,9 @@ public class Visualizator extends JFrame {
         checkBox2.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if (checkBox2.isSelected()) {
-                    scrollPane
-                            .setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+                    scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
                 } else {
-                    scrollPane
-                            .setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+                    scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
                 }
             }
         });
