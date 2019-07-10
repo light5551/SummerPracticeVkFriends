@@ -41,4 +41,8 @@ class JsonConversation {
         return obj.get("response").getAsJsonArray().get(0).getAsJsonObject();
     }
 
+    int getObjectId(JsonObject obj)
+    {
+        return obj.get("response").getAsJsonObject().get("object_id").getAsInt();
+    }
 }
