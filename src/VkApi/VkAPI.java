@@ -74,7 +74,7 @@ public class VkAPI {
         return getRequest(createGetRequest("friends.get?user_id=", userId, order, args));
     }
 
-    public VKUser getUser(int userId, String[] args)
+    private VKUser getUser(int userId, String[] args)
     {
         if (args == null)
         {
