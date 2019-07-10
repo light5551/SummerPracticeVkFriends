@@ -3,10 +3,11 @@ package Visualizator;
 import javax.swing.*;
 import java.awt.*;
 import com.mxgraph.swing.mxGraphComponent;
+import com.mxgraph.util.*;
+import com.mxgraph.util.mxEventSource.mxIEventListener;
 import com.mxgraph.model.mxCell;
 import com.mxgraph.view.mxGraph;
 import java.util.ArrayList;
-import com.mxgraph.swing.mxGraphOutline;
 import VkApi.VkAPI;
 import VkApi.VKUser;
 import java.awt.Font;
@@ -116,39 +117,64 @@ public class Visualizator extends JFrame {
         friendsGraph.getModel().beginUpdate();
         try {
             VkAPI.updateCurrentUser(userID);
+            String id = ""+userID;
             ArrayList<VKUser> friendList = vk.getFriends(VkAPI.getCurrentUser().userId, orderFriends, requestArgs);
             VKUser currentUser = VkAPI.getCurrentUser();
             String in = currentUser.firstName + " " + currentUser.lastName;
             ArrayList vertexes = new ArrayList();
             String ava = "shape=image;image="+currentUser.urlImage_50+";verticalLabelPosition=bottom";
-            vertexes.add(friendsGraph.insertVertex(parent, null, in, xRoot, yRoot, 80, 40, ava));
+            vertexes.add(friendsGraph.insertVertex(parent, id, in, xRoot, yRoot, 80, 40, ava));
             int y = -1, x = -1;
             for (int i = 0; i < friendList.size(); ) {
                 mxCell c = (mxCell) vertexes.get(i);
+                id = ""+friendList.get(i).userId;
                 in = friendList.get(i).firstName + " " + friendList.get(i).lastName;
                 ava = "shape=image;image="+friendList.get(i).urlImage_50+";verticalLabelPosition=bottom";
                 if (c.getValue().toString().charAt(0) == in.charAt(0)) {
                     if (i == 0) x++;
-                    vertexes.add(friendsGraph.insertVertex(parent, null, in,  xBorder + x * 130, yRoot + 80 + (y + 1) * 70, 80, 40, ava));
+                    vertexes.add(friendsGraph.insertVertex(parent, id, in,  xBorder + x * 130, yRoot + 80 + (y + 1) * 70, 80, 40, ava));
                     i++;
                     y++;
                     friendsGraph.insertEdge(parent, null, "", vertexes.get(i - 1), vertexes.get(i));
                 } else {
                     y = 0;
                     x++;
-                    vertexes.add(friendsGraph.insertVertex(parent, null, in, xBorder + x * 130, yRoot + 80 + y * 70, 80, 40, ava));
+                    vertexes.add(friendsGraph.insertVertex(parent, id, in, xBorder + x * 130, yRoot + 80 + y * 70, 80, 40, ava));
                     i++;
                     friendsGraph.insertEdge(parent, null, "", vertexes.get(0), vertexes.get(i));
                 }
             }
-
+            /*in = currentUser.firstName + " " + currentUser.lastName;
+            ava = "shape=image;image="+currentUser.urlImage_50+";verticalLabelPosition=bottom";
+            mxRectangle pSize = friendsGraph.getMinimumGraphSize();
+            mxCell c = (mxCell) vertexes.get(0);
+            c.removeFromParent();
+            c = (mxCell) friendsGraph.insertVertex(parent, null, in, xRoot, yRoot, 80, 40, ava);
+            for (int i = 1; i < friendList.size() - 1; i++)
+                if (((mxCell)vertexes.get(i)).getValue().toString().charAt(0) == ((mxCell)vertexes.get(i + 1)).getValue().toString().charAt(0))
+                    friendsGraph.insertEdge(parent, null, "", c, vertexes.get(i));*/
         } finally {
             friendsGraph.getModel().endUpdate();
         }
-        mxGraphComponent graphComponent = new mxGraphComponent(friendsGraph);
+        graphComponent = new mxGraphComponent(friendsGraph);
         graphComponent.getViewport().setOpaque(true);
         Color newColor = new Color(192, 192, 192);
         graphComponent.getViewport().setBackground(newColor);
+        // Handle only mouse click events
+        graphComponent.getGraphControl().addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                mxCell cell = (mxCell)graphComponent.getCellAt(e.getX(), e.getY());
+                if (cell != null) {
+                    friendID = Integer.parseInt(cell.getId());
+                    clearPanel(scrollPane);
+                    clearPanel(exitPanel);
+                    clearPanel(checkPanel);
+                    initCommonFriendsGraph();
+                    mainPanel.updateUI();
+                }
+            }
+        });
         scrollPane = new JScrollPane(graphComponent);
         scrollPane.setWheelScrollingEnabled(true);
         checkPanel = new JPanel();
@@ -210,17 +236,16 @@ public class Visualizator extends JFrame {
         CommonfriendsGraph.getModel().beginUpdate();
         try {
             VKUser currentUser = VkAPI.getCurrentUser();
-            String in = currentUser.firstName + " " + currentUser.lastName;
-            ArrayList vertexes = new ArrayList();
-            String ava = "shape=image;image="+currentUser.urlImage_50+";verticalLabelPosition=bottom";
-            vertexes.add(CommonfriendsGraph.insertVertex(parent, null, in, xRoot, yRoot, 80, 40, ava));
             vk.updateCurrentUser(friendID);
             VKUser currentFriend = VkAPI.getCurrentUser();
+            ArrayList vertexes = new ArrayList();
+            String ava = "shape=image;image="+currentFriend.urlImage_50+";verticalLabelPosition=bottom;";
+            String in = currentFriend.firstName + " " + currentFriend.lastName;
+            vertexes.add(CommonfriendsGraph.insertVertex(parent, null, in, xBorder, yRoot, 80, 40, ava));
             ArrayList<VKUser> friendList = vk.getCommonFriends(userID, friendID);
-            ava = "shape=image;image="+currentFriend.urlImage_50+";verticalLabelPosition=bottom";
-            in = currentFriend.firstName + " " + currentFriend.lastName;
-            vertexes.add(CommonfriendsGraph.insertVertex(parent, null, in, xRoot + 100, yRoot, 80, 40, ava));
-            Object firstEdge = CommonfriendsGraph.insertEdge(parent, null, "", vertexes.get(0), vertexes.get(1));
+            in = currentUser.firstName + " " + currentUser.lastName;
+            ava = "shape=image;image="+currentUser.urlImage_50+";verticalLabelPosition=bottom";
+            vertexes.add(CommonfriendsGraph.insertVertex(parent, null, in, xRoot, yRoot, 80, 40, ava));
             int y = -1, x = -1;
             for (int i = 1; i < friendList.size() + 1; ) {
                 mxCell c = (mxCell) vertexes.get(i);
@@ -237,18 +262,17 @@ public class Visualizator extends JFrame {
                     x++;
                     vertexes.add(CommonfriendsGraph.insertVertex(parent, null, in, xBorder + x * 130, yRoot + 80 + y * 70, 80, 40, ava));
                     i++;
-                    CommonfriendsGraph.insertEdge(parent, null, "", firstEdge, vertexes.get(i));
+                    CommonfriendsGraph.insertEdge(parent, null, "", vertexes.get(1), vertexes.get(i));
                 }
             }
-
         } finally {
             CommonfriendsGraph.getModel().endUpdate();
         }
-        mxGraphComponent graphComponent = new mxGraphComponent(CommonfriendsGraph);
-        graphComponent.getViewport().setOpaque(true);
+        mxGraphComponent commonGraphComponent = new mxGraphComponent(CommonfriendsGraph);
+        commonGraphComponent.getViewport().setOpaque(true);
         Color newColor = new Color(192, 192, 192);
-        graphComponent.getViewport().setBackground(newColor);
-        final JScrollPane scrollPane = new JScrollPane(graphComponent);
+        commonGraphComponent.getViewport().setBackground(newColor);
+        final JScrollPane scrollPane = new JScrollPane(commonGraphComponent);
         JPanel checkPanel = new JPanel();
         Dimension sSize = Toolkit.getDefaultToolkit ().getScreenSize ();
         sSize.width-=80;
