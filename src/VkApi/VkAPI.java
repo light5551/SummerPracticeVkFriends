@@ -138,4 +138,16 @@ public class VkAPI {
         return parseFriendsJson(response);
     }
 
+    public ArrayList<VKUser> getCommonFriends(int firstId, int secondId)
+    {
+        var first = getFriends(firstId, "name", new String[]{"photo_50"});
+        var second = getFriends(secondId,"name", new String[]{"photo_50"});
+        ArrayList<VKUser> commonFriends = new ArrayList<>();
+        for (var i : second) {
+            if (first.contains(i)) {
+                commonFriends.add(i);
+            }
+       }
+       return commonFriends;
+    }
 }

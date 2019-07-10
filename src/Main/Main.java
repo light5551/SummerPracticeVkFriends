@@ -19,35 +19,14 @@ public class Main {
 
     public static ArrayList<VKUser> getList() {
         VkAPI vk = new VkAPI();
-        // id of user
 
         int userID = 179878269;
         VkAPI.updateCurrentUser(userID);
+        var list = vk.getFriends(VkAPI.getCurrentUser().userId, orderFriends, requestArgs);
 
-        // get json
-
-        String response = vk.getUserFriends(userID, orderFriends, requestArgs);
-        ArrayList<VKUser> list;
-
-        //информация о человеке
-        System.out.println(vk.getUser(userID, null));
-
-        VKUser curUser = vk.getCurrentUser();
-        System.out.println(curUser.toString());
-
-        list = vk.parseFriendsJson(response);// json -> ArrayList
-
-        // or you can do it in one click
-        // list = vk.getFriends(userID, orderFriends, requestArgs);
-
-
-        // this only for result
-        if (list != null)
-            if (!list.isEmpty())
-                for (VKUser el : list)
-                    System.out.println(el.toString());
-            else
-                System.out.println("Empty list");
+        var friendsAnnaSergey = vk.getCommonFriends(VkAPI.getCurrentUser().userId, 141845542);
+        for (var i : friendsAnnaSergey)
+            System.out.println(i.toString());
         return list;
     }
 }
