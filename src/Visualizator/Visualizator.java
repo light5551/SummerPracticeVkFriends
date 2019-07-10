@@ -14,6 +14,8 @@ import java.awt.event.*;
 
 public class Visualizator extends JFrame {
 
+    private static final String[] requestArgs = {"photo_50", "education"};
+    private static final String orderFriends = "name";
     static int userID;
     static int friendID;
     //final int userID = 179878269;
@@ -93,7 +95,9 @@ public class Visualizator extends JFrame {
         Object parent = friendsGraph.getDefaultParent();
         friendsGraph.getModel().beginUpdate();
         try {
-            ArrayList<VKUser> friendList = Main.getList(userID);
+            VkAPI vk = new VkAPI();
+            VkAPI.updateCurrentUser(userID);
+            ArrayList<VKUser> friendList = vk.getFriends(VkAPI.getCurrentUser().userId, orderFriends, requestArgs);
             VKUser currentUser = VkAPI.getCurrentUser();
             String in = currentUser.firstName + " " + currentUser.lastName;
             ArrayList vertexes = new ArrayList();
