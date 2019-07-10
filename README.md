@@ -75,7 +75,7 @@
 ## Rules for contributors
 * After any pull request need to change [quick start](https://github.com/light5551/SummerPracticeVkFriends/new/master?readme=1#quick-start)
 * Pull request Example:
-```
+```markdown
 #<number of issue>
 Short test case
 Expected result
