@@ -6,7 +6,7 @@ import com.mxgraph.swing.mxGraphComponent;
 import com.mxgraph.model.mxCell;
 import com.mxgraph.view.mxGraph;
 import java.util.ArrayList;
-import Main.Main;
+import com.mxgraph.swing.mxGraphOutline;
 import VkApi.VkAPI;
 import VkApi.VKUser;
 import java.awt.Font;
@@ -37,8 +37,8 @@ public class Visualizator extends JFrame {
         JPanel interfacePanel = initInterface();
         mainPanel.add(interfacePanel);
         setContentPane(mainPanel);
-        setPreferredSize(new Dimension(400,400));
-        setLocation(550, 200);
+        setPreferredSize(new Dimension(980,400));
+        setLocation(200, 200);
         pack();
         setVisible(true);
 
@@ -63,9 +63,17 @@ public class Visualizator extends JFrame {
         buildButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                userID = Integer.parseInt(userField.getText());
-                initGraphPanel();
-                mainPanel.updateUI();
+                try {
+                    userID = Integer.parseInt(userField.getText());
+                    clearPanel(scrollPane);
+                    clearPanel(exitPanel);
+                    clearPanel(checkPanel);
+                    initGraphPanel();
+                    mainPanel.updateUI();
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(Visualizator.this,
+                            "Пожалуйста, введите корректный ID");
+                }
             }
         });
 
@@ -73,12 +81,17 @@ public class Visualizator extends JFrame {
         buildCommonButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                friendID = Integer.parseInt(friendField.getText());
-                clearPanel(scrollPane);
-                clearPanel(exitPanel);
-                clearPanel(checkPanel);
-                initCommonFriendsGraph();
-                mainPanel.updateUI();
+                try {
+                    friendID = Integer.parseInt(friendField.getText());
+                    clearPanel(scrollPane);
+                    clearPanel(exitPanel);
+                    clearPanel(checkPanel);
+                    initCommonFriendsGraph();
+                    mainPanel.updateUI();
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(Visualizator.this,
+                            "Пожалуйста, введите корректный ID");
+                }
             }
         });
 
@@ -131,8 +144,9 @@ public class Visualizator extends JFrame {
         Color newColor = new Color(192, 192, 192);
         graphComponent.getViewport().setBackground(newColor);
         scrollPane = new JScrollPane(graphComponent);
+        scrollPane.setWheelScrollingEnabled(true);
         checkPanel = new JPanel();
-        //scrollPane.setMaximumSize(new Dimension(800, 500));
+        scrollPane.setPreferredSize(new Dimension(1290, 600));
         exitPanel = new JPanel();
         JButton exitButton = new JButton("Назад");
         exitButton.addActionListener(new ActionListener() {
@@ -205,7 +219,7 @@ public class Visualizator extends JFrame {
                 in = friendList.get(i-1).firstName + " " + friendList.get(i-1).lastName;
                 ava = "shape=image;image="+friendList.get(i-1).urlImage_50+";verticalLabelPosition=bottom";
                 if (c.getValue().toString().charAt(0) == in.charAt(0)) {
-                    if (i == 0) x++;
+                    if (i == 1) x++;
                     vertexes.add(CommonfriendsGraph.insertVertex(parent, null, in,  xBorder + x * 130, yRoot + 80 + (y + 1) * 70, 80, 40, ava));
                     i++;
                     y++;
