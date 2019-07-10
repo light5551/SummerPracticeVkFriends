@@ -50,7 +50,7 @@
 
 *UML*
 
-![](https://media.discordapp.net/attachments/456423472923672577/597886924476252162/a1940683.png?width=421&height=676)
+![](https://yuml.me/22668f36.png)
 
 Ответственные:
 1. [Глазунов Сергей](https://github.com/light5551) (7382) - VK API, логика задач.
