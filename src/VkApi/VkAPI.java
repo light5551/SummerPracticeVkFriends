@@ -74,11 +74,11 @@ public class VkAPI {
         return getRequest(createGetRequest("friends.get?user_id=", userId, order, args));
     }
 
-    private VKUser getUser(int userId, String[] args)
+    public VKUser getUser(int userId, String[] args)
     {
         if (args == null)
         {
-            args = new String[]{"photo_50", "education"};
+            args = new String[]{"photo_50", "bdate", "games", "domain", "sex", "online", "music"};
         }
 
         String request = getRequest(createGetRequest("users.get?user_ids=", userId,null, args));
@@ -91,11 +91,26 @@ public class VkAPI {
         }
 
         JsonObject response = conversationJson.getJsonObject(jo);
-
+        System.out.println(request);
+        System.out.println(jo.toString());
+        String bdate = "";
+        try {
+            bdate = response.get("bdate").getAsString();
+        }
+        catch (Exception E)
+        {
+            bdate = "NO DATA";
+        }
         return new VKUser(response.get("id").getAsInt(),
                           response.get("first_name").getAsString(),
                           response.get("last_name").getAsString(),
-                          response.get("photo_50").getAsString());
+                          response.get("photo_50").getAsString(),
+                          response.get("sex").getAsInt(),
+                          response.get("domain").getAsString(),
+                          bdate,
+                          response.get("online").getAsInt());//,
+                          //response.get("music").getAsString(),
+                          //response.get("games").getAsString());
     }
 
     private String createGetRequest(String method, int id, String order, String[] args)

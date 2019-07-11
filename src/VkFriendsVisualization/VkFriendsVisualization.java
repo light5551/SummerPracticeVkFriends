@@ -76,6 +76,7 @@ public class VkFriendsVisualization extends JFrame {
                     initGraphPanel();
                     mainPanel.updateUI();
                 } catch (Exception ex) {
+                    ex.printStackTrace();
                     JOptionPane.showMessageDialog(VkFriendsVisualization.this,"Пожалуйста, введите корректный ID");
                 }
             }
@@ -89,6 +90,7 @@ public class VkFriendsVisualization extends JFrame {
                     try {
                         friendID = Integer.parseInt(friendField.getText());
                     } catch (Exception ex) {
+                        ex.printStackTrace();
                         friendID = vk.getIdByUrl(friendField.getText());
                     }
                     clearPanel(scrollPane);
@@ -98,6 +100,7 @@ public class VkFriendsVisualization extends JFrame {
                     initCommonFriendsGraph();
                     mainPanel.updateUI();
                 } catch (Exception ex) {
+                    ex.printStackTrace();
                     JOptionPane.showMessageDialog(VkFriendsVisualization.this,"Пожалуйста, введите корректный ID");
                 }
             }
@@ -281,7 +284,12 @@ public class VkFriendsVisualization extends JFrame {
                     CommonfriendsGraph.insertEdge(parent, null, "", vertexes.get(1), vertexes.get(i));
                 }
             }
-        } finally {
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        finally {
             CommonfriendsGraph.getModel().endUpdate();
         }
         mxGraphComponent commonGraphComponent = new mxGraphComponent(CommonfriendsGraph);
