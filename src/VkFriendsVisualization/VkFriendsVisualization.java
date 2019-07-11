@@ -76,7 +76,6 @@ public class VkFriendsVisualization extends JFrame {
                     initGraphPanel();
                     mainPanel.updateUI();
                 } catch (Exception ex) {
-                    ex.printStackTrace();
                     JOptionPane.showMessageDialog(VkFriendsVisualization.this,"Пожалуйста, введите корректный ID");
                 }
             }
@@ -90,7 +89,6 @@ public class VkFriendsVisualization extends JFrame {
                     try {
                         friendID = Integer.parseInt(friendField.getText());
                     } catch (Exception ex) {
-                        ex.printStackTrace();
                         friendID = vk.getIdByUrl(friendField.getText());
                     }
                     clearPanel(scrollPane);
@@ -100,7 +98,6 @@ public class VkFriendsVisualization extends JFrame {
                     initCommonFriendsGraph();
                     mainPanel.updateUI();
                 } catch (Exception ex) {
-                    ex.printStackTrace();
                     JOptionPane.showMessageDialog(VkFriendsVisualization.this,"Пожалуйста, введите корректный ID");
                 }
             }
@@ -161,7 +158,7 @@ public class VkFriendsVisualization extends JFrame {
             @Override
             public void mousePressed(MouseEvent e) {
                 mxCell cell = (mxCell)graphComponent.getCellAt(e.getX(), e.getY());
-                if (cell != null) {
+                if (cell != null && cell.isEdge() == false) {
 
                     friendID = Integer.parseInt(cell.getId());
                     if (e.getButton() == MouseEvent.BUTTON1) {
@@ -174,7 +171,7 @@ public class VkFriendsVisualization extends JFrame {
                             mainPanel.add(exitPanel);
                             mainPanel.add(scrollPane);
                             mainPanel.add(checkPanel);
-                            JOptionPane.showMessageDialog(VkFriendsVisualization.this, "Невозможно построить для данного пользователя");
+                            JOptionPane.showMessageDialog(VkFriendsVisualization.this, "Невозможно построить граф для данного пользователя");
                         }
                         mainPanel.updateUI();
                     }
@@ -187,7 +184,7 @@ public class VkFriendsVisualization extends JFrame {
                         textArea.setFont(new Font("Dialog", Font.PLAIN, 14));
                         textArea.setTabSize(10);
                         info.setContentPane(textArea);
-                        info.setPreferredSize(new Dimension(450,60));
+                        info.setPreferredSize(new Dimension(220,160));
                         info.setLocation(e.getXOnScreen(), e.getYOnScreen());
                         info.pack();
                         info.setVisible(true);
@@ -258,38 +255,36 @@ public class VkFriendsVisualization extends JFrame {
             vk.updateCurrentUser(friendID);
             VKUser currentFriend = VkAPI.getCurrentUser();
             ArrayList vertexes = new ArrayList();
+            String id = ""+friendID;
             String ava = "shape=image;image="+currentFriend.urlImage_50+";verticalLabelPosition=bottom;";
             String in = currentFriend.firstName + " " + currentFriend.lastName;
-            vertexes.add(CommonfriendsGraph.insertVertex(parent, null, in, xBorder, yRoot, 80, 40, ava));
+            vertexes.add(CommonfriendsGraph.insertVertex(parent, id, in, xBorder, yRoot, 80, 40, ava));
             ArrayList<VKUser> friendList = vk.getCommonFriends(userID, friendID);
+            id = ""+userID;
             in = currentUser.firstName + " " + currentUser.lastName;
             ava = "shape=image;image="+currentUser.urlImage_50+";verticalLabelPosition=bottom";
-            vertexes.add(CommonfriendsGraph.insertVertex(parent, null, in, xRoot, yRoot, 80, 40, ava));
+            vertexes.add(CommonfriendsGraph.insertVertex(parent, id, in, xRoot, yRoot, 80, 40, ava));
             int y = -1, x = -1;
             for (int i = 1; i < friendList.size() + 1; ) {
                 mxCell c = (mxCell) vertexes.get(i);
+                id = ""+friendList.get(i-1).userId;
                 in = friendList.get(i-1).firstName + " " + friendList.get(i-1).lastName;
                 ava = "shape=image;image="+friendList.get(i-1).urlImage_50+";verticalLabelPosition=bottom";
                 if (c.getValue().toString().charAt(0) == in.charAt(0)) {
                     if (i == 1) x++;
-                    vertexes.add(CommonfriendsGraph.insertVertex(parent, null, in,  xBorder + x * 130, yRoot + 80 + (y + 1) * 70, 80, 40, ava));
+                    vertexes.add(CommonfriendsGraph.insertVertex(parent, id, in,  xBorder + x * 130, yRoot + 80 + (y + 1) * 70, 80, 40, ava));
                     i++;
                     y++;
                     CommonfriendsGraph.insertEdge(parent, null, "", vertexes.get(i - 1), vertexes.get(i));
                 } else {
                     y = 0;
                     x++;
-                    vertexes.add(CommonfriendsGraph.insertVertex(parent, null, in, xBorder + x * 130, yRoot + 80 + y * 70, 80, 40, ava));
+                    vertexes.add(CommonfriendsGraph.insertVertex(parent, id, in, xBorder + x * 130, yRoot + 80 + y * 70, 80, 40, ava));
                     i++;
                     CommonfriendsGraph.insertEdge(parent, null, "", vertexes.get(1), vertexes.get(i));
                 }
             }
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-        finally {
+        } finally {
             CommonfriendsGraph.getModel().endUpdate();
         }
         mxGraphComponent commonGraphComponent = new mxGraphComponent(CommonfriendsGraph);
@@ -300,7 +295,7 @@ public class VkFriendsVisualization extends JFrame {
             @Override
             public void mousePressed(MouseEvent ev) {
                 mxCell cell = (mxCell) commonGraphComponent.getCellAt(ev.getX(), ev.getY());
-                if (cell != null) {
+                if (cell != null && cell.isEdge() == false) {
 
                     int infoID = Integer.parseInt(cell.getId());
 
@@ -313,7 +308,7 @@ public class VkFriendsVisualization extends JFrame {
                         textArea.setFont(new Font("Dialog", Font.PLAIN, 14));
                         textArea.setTabSize(10);
                         info.setContentPane(textArea);
-                        info.setPreferredSize(new Dimension(450,60));
+                        info.setPreferredSize(new Dimension(220,160));
                         info.setLocation(ev.getXOnScreen(), ev.getYOnScreen());
                         info.pack();
                         info.setVisible(true);
