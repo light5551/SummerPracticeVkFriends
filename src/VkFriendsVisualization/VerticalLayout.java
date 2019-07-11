@@ -1,4 +1,4 @@
-package Visualizator;
+package VkFriendsVisualization;
 
 import java.awt.Component;
 import java.awt.Container;
