@@ -24,6 +24,7 @@ public class VkFriendsVisualization extends JFrame {
     JTextField friendField;
     JPanel mainPanel;
     JScrollPane scrollPane = new JScrollPane(graphComponent);
+    JScrollPane scrollPanel;
     JPanel checkPanel = new JPanel();
     JPanel exitPanel = new JPanel();
     VkAPI vk = new VkAPI();
@@ -91,6 +92,7 @@ public class VkFriendsVisualization extends JFrame {
                         friendID = vk.getIdByUrl(friendField.getText());
                     }
                     clearPanel(scrollPane);
+                    clearPanel(scrollPanel);
                     clearPanel(exitPanel);
                     clearPanel(checkPanel);
                     initCommonFriendsGraph();
@@ -192,9 +194,9 @@ public class VkFriendsVisualization extends JFrame {
         });
         graphComponent.setEnabled(false);
         scrollPane = new JScrollPane(graphComponent);
-        scrollPane.setWheelScrollingEnabled(true);
         checkPanel = new JPanel();
         scrollPane.setPreferredSize(sSize);
+        scrollPane.setWheelScrollingEnabled(true);
         exitPanel = new JPanel();
         JButton exitButton = new JButton("Назад");
         exitButton.addActionListener(new ActionListener() {
@@ -312,12 +314,13 @@ public class VkFriendsVisualization extends JFrame {
             }
         });
         commonGraphComponent.setEnabled(false);
-        final JScrollPane scrollPanel = new JScrollPane(commonGraphComponent);
+        scrollPanel = new JScrollPane(commonGraphComponent);
         checkPanel = new JPanel();
         Dimension sSize = Toolkit.getDefaultToolkit ().getScreenSize ();
         sSize.width-=80;
         sSize.height-=180;
         scrollPanel.setPreferredSize(sSize);
+        scrollPanel.setWheelScrollingEnabled(true);
         exitPanel = new JPanel();
         JButton exitButton = new JButton("Назад");
         exitButton.addActionListener(new ActionListener() {

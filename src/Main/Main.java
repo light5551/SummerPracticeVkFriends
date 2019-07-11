@@ -3,7 +3,7 @@ package Main;
 import VkApi.VkAPI;
 import VkApi.VKUser;
 
-import Visualizator.*;
+import VkFriendsVisualization.*;
 
 import javax.swing.*;
 import java.util.ArrayList;
@@ -14,22 +14,22 @@ public class Main {
     private static final String orderFriends = "name";
     public static void main(String[] args) {
         JFrame.setDefaultLookAndFeelDecorated(true);
-        Visualizator.initGUI();
+        VkFriendsVisualization.initGUI();
     }
 
-    public static ArrayList<VKUser> getList() {
+    public static ArrayList<VKUser> getList(int userID) {
         VkAPI vk = new VkAPI();
 
-        int userID = 179878269;
+        //int userID = 179878269;
         VkAPI.updateCurrentUser(userID);
         ArrayList<VKUser> list = vk.getFriends(VkAPI.getCurrentUser().userId, orderFriends, requestArgs);
         
-        int id = vk.getIdByUrl("https://vk.com/consolewritesj");
-        System.out.println(id);
+        //int id = vk.getIdByUrl("https://vk.com/consolewritesj");
+        //System.out.println(id);
 
-        var friendsAnnaSergey = vk.getCommonFriends(VkAPI.getCurrentUser().userId, 141845542);
-        for (var i : friendsAnnaSergey)
-            System.out.println(i.toString());
+        //var friendsAnnaSergey = vk.getCommonFriends(VkAPI.getCurrentUser().userId, 141845542);
+        //for (var i : friendsAnnaSergey)
+            //System.out.println(i.toString());
 
         return list;
     }
