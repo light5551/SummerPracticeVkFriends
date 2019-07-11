@@ -56,7 +56,7 @@ public class VKUser {
         if (this.online == 0)
             onl = false;
         if (this.sex == 2)
-            _sex = "boy";
+            _sex = "man";
         return "Id: " + userId + "\n" +
                 "Name: " + firstName + "\n" +
                 "Surname: " + lastName + "\n" +
