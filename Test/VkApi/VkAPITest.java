@@ -4,24 +4,22 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
 
 public class VkAPITest extends Assert{
 
 
-    private static final String[]  requestArgs = {"photo50", "education"};
+    private static final String[]  requestArgs = {"photo_50"};
     private static final String orderFriends = "name";
-    int userID = 179878269;
     VkAPI test = new VkAPI();
 
-    @Test
+    @Test //тест для начального этапа разработки
     public void parseFriendsJson() {
+        int userID = 179878269;
         String response = test.getUserFriends(userID, orderFriends, requestArgs);
         ArrayList<VKUser> expected =  test.parseFriendsJson(response);
-        File file = new File(new File("").getAbsolutePath()+"\\Test\\VkApi\\test1.txt");
-        String path = file.getAbsolutePath();
+        String path = System.getProperty("user.dir")+("\\Test\\VkApi\\test1.txt");
         try(BufferedReader br = new BufferedReader(new FileReader(path))){
             String actual;
             int i=0;
@@ -32,6 +30,7 @@ public class VkAPITest extends Assert{
             }
         }
         catch (Throwable e){
+
             System.out.println("Error"+e);
         }
 
@@ -39,9 +38,40 @@ public class VkAPITest extends Assert{
 
     @Test
     public void getUser(){
-        VKUser user = new VKUser(179878269,"Sergey", "Glazunov", null);
-        VKUser expectedUser =  test.getUser(userID, requestArgs);
-        Assert.assertEquals(user, expectedUser);
-        System.out.println("Valid");
+        String path = System.getProperty("user.dir")+("\\Test\\VkApi\\test2.txt");
+        try(BufferedReader br = new BufferedReader(new FileReader(path))){
+            String actual;
+            int i=0;
+            while((actual=br.readLine())!=null){
+                int userID = Integer.parseInt(actual);
+                //test.getUser(userID,requestArgs);
+                Assert.assertNotNull(test.getUser(userID,requestArgs));
+                System.out.println(test.getUser(userID,requestArgs));
+                i++;
+            }
+        }
+        catch (Throwable e){
+            System.out.println("Error"+e);
+        }
+    }
+
+    @Test
+    public void getCommonFriends(){
+        String path = System.getProperty("user.dir")+("\\Test\\VkApi\\test3.txt");
+        int ID = 206043986;
+        try(BufferedReader br = new BufferedReader(new FileReader(path))){
+            String actual;
+            int i=0;
+            while((actual=br.readLine())!=null){
+                int userID = Integer.parseInt(actual);
+                test.getCommonFriends(userID,ID);
+                //Assert.assertNotNull(test.getUser(userID,requestArgs));
+                System.out.println(test.getCommonFriends(userID,ID));
+                i++;
+            }
+        }
+        catch (Throwable e){
+            System.out.println("Error"+e);
+        }
     }
 }
