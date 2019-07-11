@@ -24,7 +24,7 @@ public class VkFriendsVisualization extends JFrame {
     JTextField friendField;
     JPanel mainPanel;
     JScrollPane scrollPane = new JScrollPane(graphComponent);
-    JScrollPane scrollPanel;
+    JScrollPane scrollPanel = new JScrollPane();
     JPanel checkPanel = new JPanel();
     JPanel exitPanel = new JPanel();
     VkAPI vk = new VkAPI();
@@ -71,6 +71,7 @@ public class VkFriendsVisualization extends JFrame {
                         userID = vk.getIdByUrl(userField.getText());
                     }
                     clearPanel(scrollPane);
+                    clearPanel(scrollPanel);
                     clearPanel(exitPanel);
                     clearPanel(checkPanel);
                     initGraphPanel();
