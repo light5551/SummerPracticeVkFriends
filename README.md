@@ -69,7 +69,7 @@
 
 ## Main tasks
  - [x]  Get list of friends of user  
- - [ ] Graph-visualizator
+ - [x] Graph-visualizator
  - [x] Tests
 
 ## Rules for contributors
